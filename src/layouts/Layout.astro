@@ -19,9 +19,27 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <script is:inline>
+      (() => {
+        const savedTheme = localStorage.getItem("theme");
+        const shouldUseDark =
+          savedTheme === "dark" ||
+          (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+        if (shouldUseDark) {
+          document.documentElement.classList.add("dark");
+          document.documentElement.style.colorScheme = "dark";
+          return;
+        }
+
+        document.documentElement.classList.remove("dark");
+        document.documentElement.style.colorScheme = "light";
+      })();
+    </script>
   </head>
-  <body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
-    <div class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.18),transparent_30%),linear-gradient(to_bottom,#020617,#020617,#000000)]"></div>
+  <body class="min-h-screen bg-slate-50 text-slate-700 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+    <div class="pointer-events-none fixed inset-0 -z-20 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.15),transparent_45%),linear-gradient(to_bottom,#f8fafc,#f1f5f9,#f8fafc)] transition-colors duration-300 dark:bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.18),transparent_35%),linear-gradient(to_bottom,#020617,#020617,#000000)]"></div>
+    <div class="pointer-events-none fixed inset-x-0 top-0 -z-10 h-64 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.12),transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,rgba(192,132,252,0.18),transparent_70%)]"></div>
     <slot />
   </body>
 </html>
